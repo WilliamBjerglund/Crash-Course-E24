@@ -23,24 +23,12 @@ def lodretlinje4x4():
 # Funktion til at printe et 2x2 gitter
 def Grid2X2():
     # Printer vandrette og lodrette linjer for at skabe et 2x2 gitter
-    vandretlinje2x2()
-    lodretlinje2x2()
-    vandretlinje2x2()
-    lodretlinje2x2()
-    vandretlinje2x2()
+    vandretlinje2x2(); lodretlinje2x2(); vandretlinje2x2(); lodretlinje2x2(); vandretlinje2x2()
 
 # Funktion til at printe et 4x4 gitter
 def Grid4x4():
     # Printer vandrette og lodrette linjer for at skabe et 4x4 gitter
-    vandretlinje4x4()
-    lodretlinje4x4()
-    vandretlinje4x4()
-    lodretlinje4x4()
-    vandretlinje4x4()
-    lodretlinje4x4()
-    vandretlinje4x4()
-    lodretlinje4x4()
-    vandretlinje4x4()
+    vandretlinje4x4(); lodretlinje4x4(); vandretlinje4x4(); lodretlinje4x4(); vandretlinje4x4(); lodretlinje4x4(); vandretlinje4x4(); lodretlinje4x4(); vandretlinje4x4()
 
 # Kald til funktioner
 Grid2X2()
