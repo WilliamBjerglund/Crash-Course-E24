@@ -1,18 +1,17 @@
 # import random så vi ikke selv skal lave en randomizer funktion.
+# Derudover definer vi vores farver til pæne print statements [Farver er ANSI].
 import random
-
-"""
-   TODO:
-     Change the Names of gamemodes 2 and 3's code to something more correct and danish.
-     Add a way for the Game mode selection to ask again once a game is finished. (Currently it just ends the game.)
-     If time prettify the code / make the board look better. Also Make AI for Game mode 2 smarter.
-"""
-
-# vi gør vores farver til pæne print statements klar.
 Blå = '\033[94m'
 Gul = '\033[93m'
 Rød = '\033[91m'
 Grøn = '\033[92m'
+
+"""
+   TODO:
+     Change the Names & Comments i Game mode 3.
+     Add a way for the Game mode selection to ask again once a game is finished. (Currently it just ends the game.)
+     If time prettify the code / make the board look better. Also Make AI for Game mode 2 smarter. 
+"""
 
 # Vi printer en velkomst besked til spilleren.
 # Derudover beder vi spilleren om at vælge en spiltilstand. (2 spillere, 1 spiller mod maskine, 3x3 Tic Tac Toe med flytbare symboler, Afslut spillet)
@@ -217,3 +216,7 @@ elif GameMode == '4': # Dette er gamemode select for 4. det gøre også koden fo
     print("Spillet er afsluttet.") # sanitycheck for spilleren.
 else:
     print("Ugyldigt valg. Indtast venligst et nummer fra 1-4.")
+
+
+
+print("Sanity Check")
