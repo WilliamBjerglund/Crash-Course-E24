@@ -1,3 +1,7 @@
+"""
+README OBS! Dette spil har flere Gamemodes. Ultimate Tic Tac Toe fylder meget i terminal.
+Derfor anbefales du at trække din terminal en smule op så det passer til spillet.
+"""
 # Importerer random modulet til AI's trækvalg.
 # Definerer ANSI farvekoder til farvede print-udtryk.
 import random
@@ -135,6 +139,8 @@ def StartSpil3FlytbareSymboler():
     spiller = 1 # Spiller 1 starter.
     selected_X = None # Gemmer positionen for det valgte X-mærke.
     selected_O = None # Gemmer positionen for det valgte O-mærke.
+    TrækCounter = 0 # Tæller antal træk.
+    MaxTræk = 46 # Max antal træk før uafgjort.
 
     while True: # Vi laver et loop der kører indtil vi har en vinder eller uafgjort.
         PrintBoard() 
@@ -213,12 +219,20 @@ def StartSpil3FlytbareSymboler():
                 board[position] = 'X' 
             else: 
                 board[position] = 'O' 
+            
+        TrækCounter += 1 # Tæller antal træk.
 
         if is_game_over(): 
             PrintBoard() 
             print(f"{Grøn}Spiller {spiller} vinder!") 
             break 
+        if TrækCounter >= MaxTræk:
+            print(f"{Pink}Det er uafgjort!") 
+            break
+
         spiller = 3 - spiller # Skifter mellem spiller 1 og 2.
+
+
 
 # Funktion til at vælge spiltilstand.
 def VelkomstOgSpilValg():
@@ -229,6 +243,8 @@ def VelkomstOgSpilValg():
             print("Ugyldigt valg. Indtast venligst et nummer fra 1-4.")
         else:
             return GameMode
+
+
 
 # Starter spillet ved at vælge en spiltilstand.
 while True:
