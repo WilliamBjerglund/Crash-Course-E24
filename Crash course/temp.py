@@ -137,78 +137,78 @@ def StartSpilVSMachine():
 """Gamemode 3: Starter et Tic Tac Toe-spil med flytbare symboler.
                Når en spiller har 3 mærker på brættet, kan de flytte et af deres mærker til en tom plads."""
 def StartSpil3FlytbareSymboler():
-    global board # Vi bruger boardet globalt i denne funktion.
-    board = [' ' for _ in range(9)]  # Nulstil boardet ved spilstart
+    global bræt # Vi bruger brættet globalt i denne funktion.
+    bræt = [' ' for _ in range(9)]  # Nulstil brættet ved spilstart
 
     spiller = 1 # Spiller 1 starter.
-    selected_X = None # Gemmer positionen for det valgte X-mærke.
-    selected_O = None # Gemmer positionen for det valgte O-mærke.
-    TrækCounter = 0 # Tæller antal træk.
-    MaxTræk = 46 # Max antal træk før uafgjort.
+    valgt_X = None # Gemmer positionen for det valgte X-mærke.
+    valgt_O = None # Gemmer positionen for det valgte O-mærke.
+    trækTæller = 0 # Tæller antal træk.
+    maxTræk = 46 # Max antal træk før uafgjort.
 
     while True: # Vi laver et loop der kører indtil vi har en vinder eller uafgjort.
         PrintBoard() 
-        # Hvis spiller 1 har 3 mærker på boardet. Kan de vælge et mærke at flytte.
-        if board.count('X') == 3 and spiller == 1: 
-            if selected_X is None: 
+        # Hvis spiller 1 har 3 mærker på brættet. Kan de vælge et mærke at flytte.
+        if bræt.count('X') == 3 and spiller == 1: 
+            if valgt_X is None: 
                 print(f"{Blå}Spiller 1, vælg et mærke (X) at flytte:")
-                mark_to_move = input("Indtast positionen for mærket (1-9): ")
+                mærkeAtFlytte = input("Indtast positionen for mærket (1-9): ")
 
-                if not mark_to_move.isdigit() or int(mark_to_move) < 1 or int(mark_to_move) > 9: # Tjekker om inputtet er et tal fra 1-9.
+                if not mærkeAtFlytte.isdigit() or int(mærkeAtFlytte) < 1 or int(mærkeAtFlytte) > 9: # Tjekker om inputtet er et tal fra 1-9.
                     print(f"{Rød}Ugyldig indtastning. Indtast venligst et tal fra 1-9.") 
                     continue 
-                mark_to_move = int(mark_to_move) - 1
+                mærkeAtFlytte = int(mærkeAtFlytte) - 1
 
-                if board[mark_to_move] != 'X': 
+                if bræt[mærkeAtFlytte] != 'X': 
                     print(f"{Rød}Ugyldig indtastning. Vælg venligst et mærke (X) at flytte.") 
                     continue 
 
-                selected_X = mark_to_move # Gemmer valgt X position.
+                valgt_X = mærkeAtFlytte # Gemmer valgt X position.
 
-            new_position = input("Indtast den nye position for mærket (1-9): ") # Spilleren vælger en ny position.
+            nyPosition = input("Indtast den nye position for mærket (1-9): ") # Spilleren vælger en ny position.
 
-            if not new_position.isdigit() or int(new_position) < 1 or int(new_position) > 9: 
+            if not nyPosition.isdigit() or int(nyPosition) < 1 or int(nyPosition) > 9: 
                 print(f"{Rød}Ugyldig indtastning. Indtast venligst et tal fra 1-9.") 
                 continue 
-            new_position = int(new_position) - 1 
+            nyPosition = int(nyPosition) - 1 
 
-            if OptagetPladsTjek(new_position): 
+            if OptagetPladsTjek(nyPosition): 
                 print(f"{Rød}Pladsen er allerede optaget. Prøv igen.") 
                 continue 
 
-            board[selected_X] = ' ' # Fjerner gammel X position.
-            board[new_position] = 'X' # Opdaterer ny X position.
-            selected_X = None # Nulstiller X position Memory.
+            bræt[valgt_X] = ' ' # Fjerner gammel X position.
+            bræt[nyPosition] = 'X' # Opdaterer ny X position.
+            valgt_X = None # Nulstiller X position Memory.
 
-        elif board.count('O') == 3 and spiller == 2: # Hvis spiller 2 har 3 mærker på boardet. Kan de vælge et mærke at flytte.
-            if selected_O is None: 
+        elif bræt.count('O') == 3 and spiller == 2: # Hvis spiller 2 har 3 mærker på brættet. Kan de vælge et mærke at flytte.
+            if valgt_O is None: 
                 print(f"{Blå}Spiller 2, vælg et mærke (O) at flytte:")
-                mark_to_move = input("Indtast positionen for mærket (1-9): ")
+                mærkeAtFlytte = input("Indtast positionen for mærket (1-9): ")
 
-                if not mark_to_move.isdigit() or int(mark_to_move) < 1 or int(mark_to_move) > 9: # Tjek Input er tal.
+                if not mærkeAtFlytte.isdigit() or int(mærkeAtFlytte) < 1 or int(mærkeAtFlytte) > 9: # Tjek Input er tal.
                     print(f"{Rød}Ugyldig indtastning. Indtast venligst et tal fra 1-9.") 
                     continue 
-                mark_to_move = int(mark_to_move) - 1 
+                mærkeAtFlytte = int(mærkeAtFlytte) - 1 
 
-                if board[mark_to_move] != 'O': # Hvis forkert input giv fejl.
+                if bræt[mærkeAtFlytte] != 'O': # Hvis forkert input giv fejl.
                     print(f"{Rød}Ugyldig indtastning. Vælg venligst et mærke (O) at flytte.") 
                     continue 
-                selected_O = mark_to_move # Gemmer O position.
-            new_position = input("Indtast den nye position for mærket (1-9): ")
+                valgt_O = mærkeAtFlytte # Gemmer O position.
+            nyPosition = input("Indtast den nye position for mærket (1-9): ")
 
-            if not new_position.isdigit() or int(new_position) < 1 or int(new_position) > 9: # Tjek Input er tal.
+            if not nyPosition.isdigit() or int(nyPosition) < 1 or int(nyPosition) > 9: # Tjek Input er tal.
                 print(f"{Rød}Ugyldig indtastning. Indtast venligst et tal fra 1-9.") 
                 continue 
-            new_position = int(new_position) - 1 
+            nyPosition = int(nyPosition) - 1 
 
-            if OptagetPladsTjek(new_position): 
+            if OptagetPladsTjek(nyPosition): 
                 print(f"{Rød}Pladsen er allerede optaget. Prøv igen.") 
                 continue 
-            board[selected_O] = ' ' # Fjerner gammel O position.
-            board[new_position] = 'O' # Opdaterer ny O position.
-            selected_O = None # Nulstiller O position Memory.
+            bræt[valgt_O] = ' ' # Fjerner gammel O position.
+            bræt[nyPosition] = 'O' # Opdaterer ny O position.
+            valgt_O = None # Nulstiller O position Memory.
 
-        else: # Hvis ingen af spillerne har 3 mærker på boardet eller det ikke er deres tur.
+        else: # Hvis ingen af spillerne har 3 mærker på brættet eller det ikke er deres tur.
             position = input(f"{Blå}Spiller {spiller}, indtast et tal fra 1-9 for at placere dit mærke: ") 
             if not position.isdigit() or int(position) < 1 or int(position) > 9: 
                 print(f"{Rød}Ugyldig indtastning. Indtast venligst et tal fra 1-9.") 
@@ -220,17 +220,17 @@ def StartSpil3FlytbareSymboler():
                 continue 
 
             if spiller == 1: # Hvis spiller 1 er i gang.
-                board[position] = 'X' 
+                bræt[position] = 'X' 
             else: 
-                board[position] = 'O' 
+                bræt[position] = 'O' 
             
-        TrækCounter += 1 # Tæller antal træk.
+        trækTæller += 1 # Tæller antal træk.
 
         if is_game_over(): 
             PrintBoard() 
             print(f"{Grøn}Spiller {spiller} vinder!") 
             break 
-        if TrækCounter >= MaxTræk:
+        if trækTæller >= maxTræk:
             print(f"{Pink}Det er uafgjort!") 
             break
 
