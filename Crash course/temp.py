@@ -1,6 +1,10 @@
 """
 README OBS! Dette spil har flere Gamemodes. Ultimate Tic Tac Toe fylder meget i terminal.
 Derfor anbefales du at trække din terminal en smule op så det passer til spillet.
+# TODO
+Rename variabler og funktioner til i game mode 3.
+Prettify kode. / lav ultimate tic tac toe.
+MB: tilføj numre på hvert empty string plads i stedet, så man ved hvad 1-9 er.
 """
 # Importerer random modulet til AI's trækvalg.
 # Definerer ANSI farvekoder til farvede print-udtryk.
