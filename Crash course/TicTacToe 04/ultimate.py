@@ -39,11 +39,14 @@ def PrintBoard():
         print(f'{Gul}-------------')
 
 def PrintUltimateBoard():
-    print(f'{Gul}-------------')
-    for i in range(3):
-        for j in range(3):
-            print(f'{Gul}| {UltimateBoard[i][j]}{Gul} | {UltimateBoard[i][j+1]}{Gul} | {UltimateBoard[i][j+2]}{Gul} |')
-            print(f'{Gul}-------------')
+    for rækker in range(9):
+        if rækker % 3 == 0 and rækker != 0:
+            print(f'{Gul}---------------------')
+        for kolonner in range(9):
+            if kolonner % 3 == 0 and kolonner != 0:
+                print(f'{Gul}|', end='')
+            print(f'{UltimateBoard[rækker][kolonner]}', end='')
+        print()
 
 
 
@@ -92,8 +95,9 @@ def VelkomstOgSpilValg():
 while True:
     GameMode = VelkomstOgSpilValg()
 
-    #if GameMode == '1':
+    if GameMode == '1':
         #StartSpil()
+        PrintUltimateBoard()
     #elif GameMode == '2':
         #tartSpilVSMachine()
     #elif GameMode == '3':

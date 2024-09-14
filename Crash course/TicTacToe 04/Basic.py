@@ -1,5 +1,7 @@
 """
-README OBS! Dette spil har flere Gamemodes. Ultimate Tic Tac Toe fylder meget i terminal.
+README OBS! Dette spil har flere Gamemodes. 
+! OBS Beklager, de mange store functions... i am not a sane person. 
+Ultimate Tic Tac Toe fylder meget i terminal.
 Derfor anbefales du at trække din terminal en smule op så det passer til spillet.
 # TODO
 Rename variabler og funktioner til i game mode 3.
@@ -137,8 +139,8 @@ def StartSpilVSMachine():
 """Gamemode 3: Starter et Tic Tac Toe-spil med flytbare symboler.
                Når en spiller har 3 mærker på brættet, kan de flytte et af deres mærker til en tom plads."""
 def StartSpil3FlytbareSymboler():
-    global bræt # Vi bruger brættet globalt i denne funktion.
-    bræt = [' ' for _ in range(9)]  # Nulstil brættet ved spilstart
+    global board # Vi bruger brættet globalt i denne funktion.
+    board = [' ' for _ in range(9)]  # Nulstil brættet ved spilstart
 
     spiller = 1 # Spiller 1 starter.
     valgt_X = None # Gemmer positionen for det valgte X-mærke.
@@ -149,7 +151,7 @@ def StartSpil3FlytbareSymboler():
     while True: # Vi laver et loop der kører indtil vi har en vinder eller uafgjort.
         PrintBoard() 
         # Hvis spiller 1 har 3 mærker på brættet. Kan de vælge et mærke at flytte.
-        if bræt.count('X') == 3 and spiller == 1: 
+        if board.count('X') == 3 and spiller == 1: 
             if valgt_X is None: 
                 print(f"{Blå}Spiller 1, vælg et mærke (X) at flytte:")
                 mærkeAtFlytte = input("Indtast positionen for mærket (1-9): ")
@@ -159,7 +161,7 @@ def StartSpil3FlytbareSymboler():
                     continue 
                 mærkeAtFlytte = int(mærkeAtFlytte) - 1
 
-                if bræt[mærkeAtFlytte] != 'X': 
+                if board[mærkeAtFlytte] != 'X': 
                     print(f"{Rød}Ugyldig indtastning. Vælg venligst et mærke (X) at flytte.") 
                     continue 
 
@@ -176,11 +178,11 @@ def StartSpil3FlytbareSymboler():
                 print(f"{Rød}Pladsen er allerede optaget. Prøv igen.") 
                 continue 
 
-            bræt[valgt_X] = ' ' # Fjerner gammel X position.
-            bræt[nyPosition] = 'X' # Opdaterer ny X position.
+            board[valgt_X] = ' ' # Fjerner gammel X position.
+            board[nyPosition] = 'X' # Opdaterer ny X position.
             valgt_X = None # Nulstiller X position Memory.
 
-        elif bræt.count('O') == 3 and spiller == 2: # Hvis spiller 2 har 3 mærker på brættet. Kan de vælge et mærke at flytte.
+        elif board.count('O') == 3 and spiller == 2: # Hvis spiller 2 har 3 mærker på brættet. Kan de vælge et mærke at flytte.
             if valgt_O is None: 
                 print(f"{Blå}Spiller 2, vælg et mærke (O) at flytte:")
                 mærkeAtFlytte = input("Indtast positionen for mærket (1-9): ")
@@ -190,7 +192,7 @@ def StartSpil3FlytbareSymboler():
                     continue 
                 mærkeAtFlytte = int(mærkeAtFlytte) - 1 
 
-                if bræt[mærkeAtFlytte] != 'O': # Hvis forkert input giv fejl.
+                if board[mærkeAtFlytte] != 'O': # Hvis forkert input giv fejl.
                     print(f"{Rød}Ugyldig indtastning. Vælg venligst et mærke (O) at flytte.") 
                     continue 
                 valgt_O = mærkeAtFlytte # Gemmer O position.
@@ -204,8 +206,8 @@ def StartSpil3FlytbareSymboler():
             if OptagetPladsTjek(nyPosition): 
                 print(f"{Rød}Pladsen er allerede optaget. Prøv igen.") 
                 continue 
-            bræt[valgt_O] = ' ' # Fjerner gammel O position.
-            bræt[nyPosition] = 'O' # Opdaterer ny O position.
+            board[valgt_O] = ' ' # Fjerner gammel O position.
+            board[nyPosition] = 'O' # Opdaterer ny O position.
             valgt_O = None # Nulstiller O position Memory.
 
         else: # Hvis ingen af spillerne har 3 mærker på brættet eller det ikke er deres tur.
@@ -220,9 +222,9 @@ def StartSpil3FlytbareSymboler():
                 continue 
 
             if spiller == 1: # Hvis spiller 1 er i gang.
-                bræt[position] = 'X' 
+                board[position] = 'X' 
             else: 
-                bræt[position] = 'O' 
+                board[position] = 'O' 
             
         trækTæller += 1 # Tæller antal træk.
 
