@@ -8,35 +8,44 @@ import time
 import random
 
 # Definerer farvekoder
-Blå = '\033[94m'  # Bright Blue
-Cyan = '\033[36m'  # Cyan
-Rød = '\033[91m'  # Bright Red
-Grøn = '\033[92m'  # Bright Green
-Gul = '\033[93m'  # Bright Yellow
-Magenta = '\033[95m'  # Bright Magenta
-RESET = '\033[0m'  # Reset to default color
+Blå = '\033[94m'  
+Cyan = '\033[36m'  
+Rød = '\033[91m' 
+Grøn = '\033[92m'  
+Gul = '\033[93m'  
+Magenta = '\033[95m'  
+RESET = '\033[0m'  
+BOLD = "\033[1m"  
 
 # Opretter et board som en tom liste med 9 pladser, der kan opdateres med enten X eller O.
-board = [' ' for _ in range(9)]
+board = [str(i + 1) for i in range(9)]
 
 """Nulstiller brættet ved spilstart."""
 def ResetBoard():
     global board # Vi bruger boardet globalt i denne funktion.
-    board = [' ' for _ in range(9)]  # Nulstil boardet ved spilstart
+    board = [str(i + 1) for i in range(9)]  # Nulstil boardet ved spilstart
 
 
 """Printer Tic Tac Toe-boardet i konsollen."""
 def PrintBoard():
     print(f'{Cyan}-------------')
     for i in range(3):
-        # Printer en række ad gangen med tre elementer pr. række. i farve.
-        print(f'{Cyan}| {board[i*3]} | {board[i*3 + 1]} | {board[i*3 + 2]} |')
+        row = []
+        for j in range(3):
+            value = board[i*3 + j]
+            if value == 'X':
+                row.append(f'{Rød}{value}{RESET}')
+            elif value == 'O':
+                row.append(f'{Grøn}{value}{RESET}')
+            else:
+                row.append(f'{RESET}{value}{RESET}')
+        print(f'{Cyan}| {" | ".join(row)}{Cyan} |')
         print(f'{Cyan}-------------')
 
 
 """Returnerer True, hvis den angivne position er optaget, ellers False."""
 def OptagetPladsTjek(position):
-    return board[position] != ' '
+    return board[position] in ['X', 'O']
 
 
 """Checker om spillet er ovre ved at tjekke om der er en vinder i rækker, kolonner og diagonaler."""
@@ -80,7 +89,7 @@ def GameStatus(spiller):
         PrintBoard()
         print(f"{Grøn}Spiller {spiller} vinder! Vil I spille igen?{RESET}")
         return True
-    if ' ' not in board:
+    if all(space in ["x", "O"] for space in board):
         PrintBoard()
         print(f"{Gul}Det er uafgjort! Vil I have en omkamp?{RESET}")
         return True
@@ -117,7 +126,7 @@ def RykMærke(symbol, valgtMærke):
         if OptagetPladsTjek(nyPosition):
             print(f"{Rød}Pladsen er allerede optaget. Prøv igen.{RESET}")
             continue
-        board[valgtMærke] = ' '
+        board[valgtMærke] = str(valgtMærke + 1)
         board[nyPosition] = symbol
         break
 
@@ -206,13 +215,69 @@ def StartSpil3FlytbareSymboler():
         spiller = 3 - spiller
 
 
-"""Funktion til at vælge spiltilstand."""
+""" Viser menuen for vores Tic Tac Toe spilregler.
+    Derudover håndterer den også spiller input for menuen."""
+def SpilleReglersMenu():
+    while True:
+        indent = " " * 14
+        print(f"{Blå}{indent}{'*' * 20}{RESET}\n{Gul}{BOLD}{indent} Spillets regelmenu{RESET}\n{Blå}{indent}{'*' * 20}{RESET}")
+        print(f"{Cyan}{BOLD}Vælg spiltilstanden du ønsker at se reglerne for:{RESET}{Cyan}\n1. 2 spillere\n2. 1 spiller mod Maskine\n3. 3x3 Tic Tac Toe med flytbare symboler\n4. Tilbage til hovedmenu{RESET}")
+        valg = input("Indtast dit valg (1-4): ")
+        time.sleep(0.2)
+        if not valg.isdigit() or int(valg) < 1 or int(valg) > 4:
+            print(f"{Rød}Ugyldigt valg. Indtast venligst et nummer fra 1-4.{RESET}")
+        else:
+            if valg == "1":
+                ReglerClassicPrint()
+            elif valg == "2":
+                ReglerSpillerVSMaskinePrint()
+            elif valg == "3":
+                Regler3x3FlytbareSymbolerPrint()
+            elif valg == "4":
+                break
+
+
+""" Her håndteres bevægelsen mellem menuer. Så det er muligt at komme tilbage til regelmenuen. efter at have læst reglerne."""
+def BevægelseMellemMenuer():
+    while True:
+        valg = input("Indtast 4 for at gå tilbage til regler menuen: ")
+        if valg == "4":
+            break
+        else:
+            print(f"{Rød}Ugyldigt valg. Indtast venligst 4 for at gå tilbage til regler menuen.{RESET}")
+
+
+""" Printer reglerne for Classic Tic Tac Toe."""
+def ReglerClassicPrint():
+    print(f"{Blå}{'*' * 34}{RESET}\n{Gul}{BOLD} Reglerne for Classic Tic Tac Toe{RESET}\n{Blå}{'*' * 34}{RESET}")
+    print (f"{Cyan}1. Classic Tic Tac Toe spilles på et 3x3 Gitter board.\n2. Spillet spilles af 2 spillere, hvor den ene spiller med X og den anden med O.{RESET}")
+    print(f"{Cyan}3. Spillerne skiftes til at placere deres mærker på brættet.\n4. Målet er at få 3 af deres mærker på en vandret, lodret eller diagonal linje.{RESET}")
+    print(f"{Cyan}5. Spillet slutter, når en spiller har 3 mærker på en linje, eller der ikke er flere træk tilbage (Uafgjort).{RESET}")
+    BevægelseMellemMenuer()
+
+""" Printer reglerne for Tic Tac Toe VS AI."""
+def ReglerSpillerVSMaskinePrint():
+    print(f"{Blå}{'*' * 34}{RESET}\n{Gul}{BOLD} Reglerne for Tic Tac Toe VS AI{RESET}\n{Blå}{'*' * 34}{RESET}")
+    print (f"{Cyan}1. Tic Tac Toe VS AI spilles på et 3x3 Gitter board.\n2. Spillet spilles af 1 spiller mod en AI, hvor spilleren spiller med X og AI'en med O.{RESET}")
+    print(f"{Cyan}3. Spilleren starter med at placere deres mærke på brættet.\n4. Målet er at få 3 af deres mærker på en vandret, lodret eller diagonal linje.{RESET}")
+    print(f"{Cyan}5. Spillet slutter, når spilleren eller vores AI har 3 mærker på en linje, eller der ikke er flere træk tilbage (Uafgjort).{RESET}")
+    BevægelseMellemMenuer()
+
+""" Printer reglerne for Tic Tac Toe med Flytbare Symboler."""
+def Regler3x3FlytbareSymbolerPrint():
+    print(f"{Blå}{'*' * 48}{RESET}\n{Gul}{BOLD} Reglerne for Tic Tac Toe med Flytbare Symboler{RESET}\n{Blå}{'*' * 48}{RESET}")
+    BevægelseMellemMenuer()
+
+
+"""Velkomstmenu. Her vises spiltilstandene, og spilleren kan vælge en spiltilstand eller se reglerne for spillet samt afslutte det."""
 def VelkomstOgSpilValg():
     while True:
-        print(f"{Magenta}Vælg spiltilstand:\n1. 2 spillere\n2. 1 spiller mod Maskine\n3. 3x3 Tic Tac Toe med flytbare symboler\n4. Afslut{RESET}")
-        GameMode = input("Indtast dit valg (1-4): ")
+        indent = " " * 5
+        print(f'{Blå}{"*" * 28}{RESET}\n{Gul}{BOLD} Velkommen til Tic Tac Toe!{RESET}\n{Blå}{"*" * 28}{RESET}')
+        print(f"{Cyan}{BOLD}{indent}Vælg spiltilstand:{RESET}{Cyan}\n{indent}1. 2 spillere\n{indent}2. 1 spiller mod Maskine\n{indent}3. 3x3 Tic Tac Toe med flytbare symboler\n{indent}4. Reglerne\n{indent}5. Afslut{RESET}")
+        GameMode = input("Indtast dit valg (1-5): ")
         time.sleep(0.2)
-        if not GameMode.isdigit() or int(GameMode) < 1 or int(GameMode) > 4:
+        if not GameMode.isdigit() or int(GameMode) < 1 or int(GameMode) > 5:
             print(f"{Rød}Ugyldigt valg. Indtast venligst et nummer fra 1-4.{RESET}")
         else:
             return GameMode
@@ -221,14 +286,16 @@ def VelkomstOgSpilValg():
 while True:
     GameMode = VelkomstOgSpilValg()
 
-    if GameMode == '1':
+    if GameMode == "1":
         StartSpil()
-    elif GameMode == '2':
+    elif GameMode == "2":
         StartSpilVSMachine()
-    elif GameMode == '3':
+    elif GameMode == "3":
         StartSpil3FlytbareSymboler()
-    elif GameMode == '4': 
+    elif GameMode == "4": 
+        SpilleReglersMenu()
+    elif GameMode == "5":
         print("Spillet er afsluttet.")
         break
     else:
-        print(f"{Rød}Ugyldigt valg. Indtast venligst et nummer fra 1-4.{RESET}")
+        print(f"{Rød}Ugyldigt valg. Indtast venligst et nummer fra 1-5.{RESET}")
