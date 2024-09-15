@@ -1,10 +1,10 @@
 """
 README OBS! Dette spil har flere Gamemodes Also Please run in VSCode eller anden IDE.
 Windows Terminal kan ikke vise ANSI farvekoder, så farvede print-udtryk vil ikke blive vist korrekt.
-ALSO NOTE! Spillet fylder en smule i konsollen så alt efter din screen size kan det være nødvendigt at dragge din konsol lidt op. 
+
+ALSO NOTE! Spillet fylder en smule i konsollen så alt efter din screen size kan det være nødvendigt at dragge din konsol lidt op (12 linjer). 
 """
 # Importerer random modulet til AI's trækvalg. Og Time for sanity checks.
-# Definerer ANSI farvekoder til farvede print-udtryk.
 import time
 import random
 
@@ -266,7 +266,7 @@ def BevægelseMellemMenuer():
         if valg == "4":
             break
         else:
-            print(f"{Rød}Ugyldigt valg. Indtast venligst 4 for at gå tilbage til regler menuen.{RESET}")
+            print(f"{Rød}Ugyldigt valg. Indtast venligst 4 for at gå tilbage til regel menuen.{RESET}")
 
 
 """ Printer reglerne for Classic Tic Tac Toe."""
