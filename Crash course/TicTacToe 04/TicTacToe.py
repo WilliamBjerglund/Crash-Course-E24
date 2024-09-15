@@ -1,6 +1,7 @@
 """
 README OBS! Dette spil har flere Gamemodes Also Please run in VSCode eller anden IDE.
-Windows Terminal kan ikke vise ANSI farvekoder, så farvede print-udtryk vil ikke blive vist korrekt. 
+Windows Terminal kan ikke vise ANSI farvekoder, så farvede print-udtryk vil ikke blive vist korrekt.
+ALSO NOTE! Spillet fylder en smule i konsollen så alt efter din screen size kan det være nødvendigt at dragge din konsol lidt op. 
 """
 # Importerer random modulet til AI's trækvalg. Og Time for sanity checks.
 # Definerer ANSI farvekoder til farvede print-udtryk.
@@ -39,8 +40,8 @@ def PrintBoard():
                 row.append(f'{Grøn}{value}{RESET}')
             else:
                 row.append(f'{RESET}{value}{RESET}')
-        print(f'{Cyan}| {" | ".join(row)}{Cyan} |')
-        print(f'{Cyan}-------------')
+        print(f'{Cyan}| {RESET}' + f'{Cyan} | {RESET}'.join(row) + f'{Cyan} |{RESET}')
+        print(f'{Cyan}-------------{RESET}')
 
 
 """Returnerer True, hvis den angivne position er optaget, ellers False."""
@@ -89,7 +90,7 @@ def GameStatus(spiller):
         PrintBoard()
         print(f"{Grøn}Spiller {spiller} vinder! Vil I spille igen?{RESET}")
         return True
-    if all(space in ["x", "O"] for space in board):
+    if all(space in ["X", "O"] for space in board):
         PrintBoard()
         print(f"{Gul}Det er uafgjort! Vil I have en omkamp?{RESET}")
         return True
@@ -147,6 +148,29 @@ def PlacerNyMærke(spiller, symbol):
         break
 
 
+""" Denne funktion vælger vores AI's placement ved først at checke om den kan vinde på næste træk.
+    Hvis AI'en ikke kan vinde, tjekker den om spilleren kan vinde på næste træk og blokerer det træk 50% af tiden.
+    Hvis ingen af de ovenstående er sande, vælger AI'en en tilfældig tom plads."""
+def AIMærkePlacering():
+    for i in range(9): # Kan jeg vinde på næste træk (AI)?
+        if not OptagetPladsTjek(i):
+            board[i] = 'O'
+            if is_game_over():
+                board[i] = str(i + 1)
+                return i
+            board[i] = str(i + 1)
+    for i in range(9): # Kan spilleren vinde på næste træk?
+        if not OptagetPladsTjek(i):
+            board[i] = 'X'
+            if is_game_over(): # Blokerer spilleren 50% af tiden.
+                board[i] = str(i + 1)
+                if random.random() < 0.5:
+                    return i
+            board[i] = str(i + 1) 
+    TommePladser = [i for i in range(9) if not OptagetPladsTjek(i)] # Vælg en tilfældig tom plads.
+    return random.choice(TommePladser)
+
+
 """Gamemode 1: Starter et Tic Tac Toe-spil for to spillere, hvor de skiftes til at placere X og O.
                Spillet fortsætter indtil der er en vinder eller uafgjort."""
 def StartSpil():
@@ -174,8 +198,7 @@ def StartSpilVSMachine():
             position = PlayerInput(spiller)
             board[position] = 'X'
         else:
-            TommePladser = [i for i in range(9) if not OptagetPladsTjek(i)]
-            position = random.choice(TommePladser)
+            position = AIMærkePlacering()
             board[position] = 'O'
 
         if GameStatus(spiller):
@@ -219,8 +242,7 @@ def StartSpil3FlytbareSymboler():
     Derudover håndterer den også spiller input for menuen."""
 def SpilleReglersMenu():
     while True:
-        indent = " " * 14
-        print(f"{Blå}{indent}{'*' * 20}{RESET}\n{Gul}{BOLD}{indent} Spillets regelmenu{RESET}\n{Blå}{indent}{'*' * 20}{RESET}")
+        print(f"{Blå}{'*' * 20}{RESET}\n{Gul}{BOLD} Spillets regelmenu{RESET}\n{Blå}{'*' * 20}{RESET}")
         print(f"{Cyan}{BOLD}Vælg spiltilstanden du ønsker at se reglerne for:{RESET}{Cyan}\n1. 2 spillere\n2. 1 spiller mod Maskine\n3. 3x3 Tic Tac Toe med flytbare symboler\n4. Tilbage til hovedmenu{RESET}")
         valg = input("Indtast dit valg (1-4): ")
         time.sleep(0.2)
@@ -266,15 +288,18 @@ def ReglerSpillerVSMaskinePrint():
 """ Printer reglerne for Tic Tac Toe med Flytbare Symboler."""
 def Regler3x3FlytbareSymbolerPrint():
     print(f"{Blå}{'*' * 48}{RESET}\n{Gul}{BOLD} Reglerne for Tic Tac Toe med Flytbare Symboler{RESET}\n{Blå}{'*' * 48}{RESET}")
+    print(f"{Cyan}1. Tic Tac Toe med Flytbare Symboler spilles på et 3x3 Gitter board.\n2. Spillet spilles af 2 spillere, hvor den ene spiller med X og den anden med O.{RESET}")
+    print(f"{Cyan}3. Spillerne skiftes til at placere deres mærker på brættet.\n4. Når en spiller har 3 mærker på brættet, kan de flytte et af deres mærker til en tom plads.{RESET}")
+    print(f"{Cyan}5. Målet er at få 3 af deres mærker på en vandret, lodret eller diagonal linje.{RESET}")
+    print(f"{Cyan}6. Spillet slutter, når en spiller har 3 mærker på en linje, eller der ikke er fundet en vinder efter 46 træk (uafgjort).{RESET}")
     BevægelseMellemMenuer()
 
 
 """Velkomstmenu. Her vises spiltilstandene, og spilleren kan vælge en spiltilstand eller se reglerne for spillet samt afslutte det."""
 def VelkomstOgSpilValg():
     while True:
-        indent = " " * 5
         print(f'{Blå}{"*" * 28}{RESET}\n{Gul}{BOLD} Velkommen til Tic Tac Toe!{RESET}\n{Blå}{"*" * 28}{RESET}')
-        print(f"{Cyan}{BOLD}{indent}Vælg spiltilstand:{RESET}{Cyan}\n{indent}1. 2 spillere\n{indent}2. 1 spiller mod Maskine\n{indent}3. 3x3 Tic Tac Toe med flytbare symboler\n{indent}4. Reglerne\n{indent}5. Afslut{RESET}")
+        print(f"{Cyan}{BOLD}Vælg spiltilstand:{RESET}{Cyan}\n1. 2 spillere\n2. 1 spiller mod Maskine\n3. 3x3 Tic Tac Toe med flytbare symboler\n4. Reglerne\n5. Afslut{RESET}")
         GameMode = input("Indtast dit valg (1-5): ")
         time.sleep(0.2)
         if not GameMode.isdigit() or int(GameMode) < 1 or int(GameMode) > 5:
@@ -282,7 +307,7 @@ def VelkomstOgSpilValg():
         else:
             return GameMode
 
-# Starter spillet ved at vælge en spiltilstand.
+""" Starter spillet ved at vælge en spiltilstand."""
 while True:
     GameMode = VelkomstOgSpilValg()
 
